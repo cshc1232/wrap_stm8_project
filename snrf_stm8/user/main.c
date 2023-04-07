@@ -6,11 +6,14 @@
 #include "count.h"
 #include "nRF24L01.h"
 
+// GDEW0215T11 Ä«Ë®ÆÁÄ»ÐÍºÅ
+//https://www.wangsu123.cn/news/15129.html
+//https://blog.csdn.net/sxhexin/article/details/116347437
+
 extern u8 setflag;
 
 void main(void)
 {
-
 
   Init_CLK();
   Init_UART1();

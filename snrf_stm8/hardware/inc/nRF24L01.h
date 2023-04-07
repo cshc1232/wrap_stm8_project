@@ -15,6 +15,9 @@
 #define NRF24L01_CS_PORT   GPIOC
 #define NRF24L01_CS_PIN   GPIO_PIN_4
 
+
+
+
 //以下为SPI引脚
 
 #define NRF24L01_SCK_PORT  GPIOC

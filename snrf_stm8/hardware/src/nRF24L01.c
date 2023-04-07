@@ -2,8 +2,10 @@
 #include "nRF24L01.h"
 #include "stdio.h"
 
-const u8 TX_ADDRESS[TX_ADR_WIDTH]  = {0xff,0xff,0xff,0xff,0xff}; // Define a static TX address
-const u8 RX_ADDRESS[RX_ADR_WIDTH]  = {0xff,0xff,0xff,0xff,0xff}; // Define a static RX address
+
+
+const u8 TX_ADDRESS[TX_ADR_WIDTH]  = {0x34,0x43,0x10,0x10,0x01}; // Define a static TX address
+const u8 RX_ADDRESS[RX_ADR_WIDTH]  = {0x34,0x43,0x10,0x10,0x01}; // Define a static RX address
 
 //uchar  stat;		   //存放在可位寻址的区域
 //sbit	RX_DR	=sta^6;	  //按位异或
@@ -181,10 +183,10 @@ void NRF24L01_RX_Mode(void)
         NRF24L01_Write_Buf(WRITE_REG_NRF + RX_ADDR_P0, (u8*)RX_ADDRESS, RX_ADR_WIDTH); // Use the same address on the RX device as the TX device	
 	NRF24L01_Write_Reg(WRITE_REG_NRF + EN_AA, 0x01);      //频道0自动	ACK应答允许	 
 	NRF24L01_Write_Reg(WRITE_REG_NRF + EN_RXADDR, 0x01);  //允许接收地址只有频道0， 
-	NRF24L01_Write_Reg(WRITE_REG_NRF + RF_CH, 0);        //   设置信道工作为2.4GHZ，收发必须一致
+	NRF24L01_Write_Reg(WRITE_REG_NRF + RF_CH, 40);        //   设置信道工作为2.4GHZ，收发必须一致
 	NRF24L01_Write_Reg(WRITE_REG_NRF + RX_PW_P0, RX_PLOAD_WIDTH); //设置接收数据长度，本次设置为32字节
 	NRF24L01_Write_Reg(WRITE_REG_NRF + RF_SETUP, 0x0f); // 设置发射速率为2MHZ，发射功率为最大值0dB ,低噪声增益
-        NRF24L01_Write_Reg(WRITE_REG_NRF + CONFIG, 0x0f);    //power up  1: PRX  配置基本工作模式的参数;PWR_UP,EN_CRC,16BIT_CRC,接收模式 
+        NRF24L01_Write_Reg(WRITE_REG_NRF + CONFIG, 0x0e);    //power up  1: PRX  配置基本工作模式的参数;PWR_UP,EN_CRC,16BIT_CRC,接收模式 
         
 	GPIO_WriteHigh(NRF24L01_CE_PORT,NRF24L01_CE_PIN);       //CE = 1; 
 	//inerDelay_us(130);
@@ -227,11 +229,11 @@ void NRF24L01_RT_Mode(void)
       
       GPIO_WriteLow(NRF24L01_CE_PORT,NRF24L01_CE_PIN);
 	
-      NRF24L01_Write_Buf(WRITE_REG_NRF+TX_ADDR,(u8*)TX_ADDRESS,TX_ADR_WIDTH);//写TX节点地址 	
+      //NRF24L01_Write_Buf(WRITE_REG_NRF+TX_ADDR,(u8*)TX_ADDRESS,TX_ADR_WIDTH);//写TX节点地址 	
       NRF24L01_Write_Buf(WRITE_REG_NRF+RX_ADDR_P0,(u8*)RX_ADDRESS,RX_ADR_WIDTH);//写RX节点地址
       NRF24L01_Write_Reg(WRITE_REG_NRF+EN_AA,0x01);     //使能通道0的自动应答    
       NRF24L01_Write_Reg(WRITE_REG_NRF+EN_RXADDR,0x01); //使能通道0的接收地址  
-      NRF24L01_Write_Reg(WRITE_REG_NRF+RF_CH,0);       //设置RF通道为0,通讯频率2400+ RH_CH mhz 双方一致
+      NRF24L01_Write_Reg(WRITE_REG_NRF+RF_CH,40);       //设置RF通道为0,通讯频率2400+ RH_CH mhz 双方一致
       NRF24L01_Write_Reg(WRITE_REG_NRF+RX_PW_P0,RX_PLOAD_WIDTH);//选择通道0的有效数据宽度
       NRF24L01_Write_Reg(WRITE_REG_NRF+RF_SETUP,0x0f);  //设置TX发射参数,0db增益,2Mbps,低噪声增益开启   
       NRF24L01_Write_Reg(WRITE_REG_NRF+CONFIG,0x0f);    //配置基本工作模式的参数:接收模式，1~16位CRC校验，IRQ显示所有中断
